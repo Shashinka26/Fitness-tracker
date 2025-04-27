@@ -17,11 +17,11 @@ jobs:
     steps:
     # Step 1: Checkout code
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: public/checkout@v2
 
     # Step 2: Set up Node.js environment
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: public/setup-node@v2
       with:
         node-version: '14'  # Use Node 14 (or the version you prefer)
 
