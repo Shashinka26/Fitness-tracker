@@ -26,7 +26,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18' # React 19 needs Node.js 20 ideally
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
@@ -37,7 +37,7 @@ jobs:
       - name: Upload production-ready files
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ./build   # React outputs into "build" folder
+          path: ./build
 
   deploy:
     needs: build
@@ -47,6 +47,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: github-pages
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
