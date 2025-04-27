@@ -1,34 +1,39 @@
 name: CI/CD Pipeline
 
+# Trigger this pipeline on push to the 'main' branch
 on:
   push:
     branches:
       - main
+
+permissions:
+  id-token: write    # 👉 Important for deploy-pages action
+  contents: read 
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4  # ✅ Updated to v4
+    # Step 1: Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4  # ✅ Updated to v4
-        with:
-          node-version: '20'  # ✅ Use LTS version
+    # Step 2: Set up Node.js environment
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'  # Use Node 14 (or the version you prefer)
 
-      - name: Install dependencies
-        run: npm install
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: npm install
 
-      - name: Build React app
-        run: npm run build
+    # Step 4: Build the React app
+    - name: Build React app
+      run: npm run build
 
-      - name: Upload Pages artifact  # ✅ REQUIRED step for GitHub Pages
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: 'build/index.html'  # Path to your built assets
-
+      # Deployment job
   deploy:
     environment:
       name: github-pages
@@ -39,3 +44,8 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+    # Optional Step 6: (Deploy to Firebase if needed)
+    # You can deploy to Firebase Functions if you have backend logic
+    # - name: Deploy to Firebase
+    #   run: firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
