@@ -1,42 +1,43 @@
-name: CI/CD Pipeline
+name: Build and Deploy React App to GitHub Pages
 
-# Trigger this pipeline on push to the 'main' branch
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
-  id-token: write    # 👉 Important for deploy-pages action
-  contents: read 
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout code
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # Step 2: Set up Node.js environment
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'  # Use Node 14 (or the version you prefer)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # React 19 needs Node.js 20 ideally
 
-    # Step 3: Install dependencies
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    # Step 4: Build the React app
-    - name: Build React app
-      run: npm run build
+      - name: Build React app
+        run: npm run build
 
-     # - name: Upload production-ready files
-     #   uses: actions/upload-pages-artifact@v2
-      ##  with:
-      #    path: ./build   # React apps build into 'build' folder
+      - name: Upload production-ready files
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./build   # React outputs into "build" folder
 
   deploy:
     needs: build
