@@ -34,10 +34,10 @@ jobs:
       - name: Build React app
         run: npm run build
 
-      - name: Upload production-ready files
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: public/
+#      - name: Upload production-ready files
+ #       uses: actions/upload-pages-artifact@v2
+  #      with:
+   #       path: public/
 
   deploy:
     needs: build
