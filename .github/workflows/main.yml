@@ -37,7 +37,7 @@ jobs:
       - name: Upload production-ready files
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ./build
+          path: ./public
 
   deploy:
     needs: build
