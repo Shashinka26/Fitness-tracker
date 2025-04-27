@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write    # 👉 Important for deploy-pages action
+  contents: read 
+
 jobs:
   build:
     runs-on: ubuntu-latest
