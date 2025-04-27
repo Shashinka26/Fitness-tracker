@@ -27,7 +27,7 @@ jobs:
       - name: Upload Pages artifact  # ✅ REQUIRED step for GitHub Pages
         uses: actions/upload-pages-artifact@v2
         with:
-          path: 'build/'  # Path to your built assets
+          path: 'build/index.html'  # Path to your built assets
 
   deploy:
     environment:
